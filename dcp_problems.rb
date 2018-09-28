@@ -10,7 +10,6 @@ def problem2(ar)
   end
 end
 
-
 # problem3
 class Node
   attr_accessor :val, :left, :right
@@ -32,7 +31,3 @@ def serialize(node)
   ret += ", #{serialize(node.right)}" if node.right
   return ret+')'
 end
-
-
-node = Node.new('root', Node.new('left', Node.new('left.left')), Node.new('right'))
-puts(deserialize(serialize(node)).left.left.val == 'left.left')
