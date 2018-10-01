@@ -31,3 +31,9 @@ def serialize(node)
   ret += ", #{serialize(node.right)}" if node.right
   return ret+')'
 end
+
+def problem4(ar)
+  (1..ar.size+1).each do |a|
+    return a if ar.index(a).nil?
+  end
+end
