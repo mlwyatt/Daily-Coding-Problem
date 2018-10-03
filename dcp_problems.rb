@@ -99,6 +99,21 @@ class XorLL
   end
 end
 
-def problem7(decode)
-  
+def problem7(encoded)
+  counter = []
+  if encoded[0].to_i > 0
+    counter << [encoded[0],problem7(encoded[1..-1])]
+  end
+  if counter.size == 1 && encoded[1] && encoded[0..1].to_i <= 26
+    counter << [encoded[0..1],problem7(encoded[2..-1])]
+  end
+  flat_ways = []
+  counter.each do |c|
+    c[1].each do |c2|
+      flat_ways << "#{c[0]} #{c2}"
+    end
+    flat_ways << c[0] if c[1].empty?
+  end
+
+  return flat_ways.uniq
 end
