@@ -18,6 +18,22 @@ class Node
     @left = left
     @right = right
   end
+  def is_unival?
+    return true if is_leaf?
+    return val == right.val && right.is_unival? if left.nil?
+    return val == left.val && left.is_unival? if right.nil?
+    return val == right.val && right.val == left.val && left.is_unival? && right.is_unival?
+  end
+  def count_unival
+    return 1 if is_leaf?
+    to_add = is_unival? ? 1 : 0
+    return to_add+left.count_unival if right.nil?
+    return to_add+ right.count_unival if left.nil?
+    return to_add+left.count_unival+right.count_unival
+  end
+  def is_leaf?
+    left.nil? && right.nil?
+  end
 end
 
 def deserialize(s)
