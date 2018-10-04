@@ -133,3 +133,24 @@ def problem7(encoded)
 
   return flat_ways.uniq
 end
+
+def problem9(ar)
+  sum = 0
+  while ar.count(0) < ar.length do
+    max = ar.max
+    i = ar.index(max)
+    if ar[i+1] == max && i > 0 && i + 1 <= ar.length - 1
+      # next is max and not at beginning and not past end
+      i = (i + 1 == ar.length - 1 || ar[i-1] > ar[i+2]) ? i + 1 : i
+    end
+    if max > 0
+      sum += max
+      ar[i-1] = 0 if i > 0
+      ar[i] = 0
+      ar[i+1] = 0 if i + 1 < ar.length
+    else
+      break # biggest won't add to sum anymore
+    end
+  end
+  return sum
+end
