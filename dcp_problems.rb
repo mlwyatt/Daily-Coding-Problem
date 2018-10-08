@@ -154,3 +154,33 @@ def problem9(ar)
   end
   return sum
 end
+
+# problem 11
+class Dictionary
+  def initialize(words)
+    @words = words
+    @index = {}
+    words.each do |word|
+      node = index
+      (0..word.size).each do |i|
+        sub = word[0..i]
+        node[sub] ||= {}
+        node[sub][:words] ||= []
+        node[sub][:words] << word unless node[sub][:words].include?(word)
+        node = node[sub]
+      end
+    end
+  end
+  def index
+    @index
+  end
+  def autocomplete(s)
+    node = index
+    i = 0
+    while node.has_key?(s[0..i]) do
+      node = node[s[0..i]]
+      i += 1
+    end
+    return node[:words]
+  end
+end
