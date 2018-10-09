@@ -184,3 +184,12 @@ class Dictionary
     return node[:words]
   end
 end
+
+def problem12(n,set)
+  cache = [0]*(n+1)
+  cache[0] = 1
+  (1..n).each do |i|
+    cache[i] += set.reduce(0){|sum,s| sum + (i-s<0 ? 0 : cache[i-s])}
+  end
+  cache[n]
+end
