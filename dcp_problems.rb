@@ -193,3 +193,26 @@ def problem12(n,set)
   end
   cache[n]
 end
+
+def problem13(k,s)
+  counter = 0
+  max = 0
+  a = 0
+  b = 1
+  while b-a <= s.size do
+    sub = s[a,b]
+    if sub.chars.uniq.size > k
+      a += 1
+      b = 1
+    else
+      b += 1
+      max = [max,sub.chars.size].max
+    end
+    counter += 1
+    if counter > 100
+      puts 'break'
+      break
+    end
+  end
+  return max
+end
