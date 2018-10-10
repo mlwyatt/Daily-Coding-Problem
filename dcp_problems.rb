@@ -216,3 +216,21 @@ def problem13(k,s)
   end
   return max
 end
+
+def problem14
+  inside = 0.0
+  outside = 0.0
+  pi = 0
+  while (pi-3.14159).abs > 0.001 do
+    x = 2*rand-1 # -1..1
+    y = 2*rand-1 # -1..1
+    r = x**2+y**2
+    if r<=1
+      inside += 1
+    else
+      outside += 1
+    end
+    pi = inside/(inside+outside)/r
+  end
+  return pi
+end
