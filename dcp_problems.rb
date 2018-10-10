@@ -234,3 +234,15 @@ def problem14
   end
   return pi
 end
+
+def problem15(stream)
+  r = nil
+  stream.each_with_index do |s,i|
+    if i == 0
+      r = s
+    elsif ((i+1)*rand+1).to_i == 1
+      r = s
+    end
+  end
+  return r
+end
