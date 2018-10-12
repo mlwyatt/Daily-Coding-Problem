@@ -261,3 +261,32 @@ class OrderList
     @orders
   end
 end
+
+def problem17(str)
+  return 0 unless str =~ /\./
+  stack = []
+  depth = 0
+  sizes = []
+  str.split("\n").each do |s|
+    d = s.count("\t")
+    w = s.gsub("\t",'')
+    if d == 0
+      stack << w
+    else
+      if w =~ /\./
+        sizes << stack.join('/')+'/'+w
+      else
+        if d > depth
+          stack << w
+          depth += 1
+        elsif d < depth
+          stack.pop
+          depth -= 1
+        else
+          stack[-1] = w
+        end
+      end
+    end
+  end
+  sizes.map(&:size).max
+end
