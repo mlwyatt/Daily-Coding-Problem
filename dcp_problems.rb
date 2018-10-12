@@ -246,3 +246,18 @@ def problem15(stream)
   end
   return r
 end
+
+class OrderList
+  def initialize(n)
+    @orders = [nil]*n
+  end
+  def record(order_id)
+    @orders = @orders[1..-1]+[order_id]
+  end
+  def get_last(i)
+    @orders[-i]
+  end
+  def orders
+    @orders
+  end
+end
