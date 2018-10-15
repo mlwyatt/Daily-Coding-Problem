@@ -290,3 +290,7 @@ def problem17(str)
   end
   sizes.map(&:size).max
 end
+
+def problem18(ar,k)
+  ar.each_cons(k).map(&:max)
+end
