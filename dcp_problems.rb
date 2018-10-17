@@ -55,7 +55,7 @@ def problem4(ar)
 end
 
 # problem 6
-class LLNode
+class XorLLNode
   def initialize(val)
     @val = val
     @both = 0
@@ -106,7 +106,7 @@ class XorLL
   def print
     node = @root
     prev = 0
-    while node.is_a?(LLNode) do
+    while node.is_a?(XorLLNode) do
       puts "<- #{node.val} ->"
       n_node = node.next_node(prev)
       prev = node.get_pointer
@@ -328,3 +328,58 @@ puts problem19([[5,6,2],[2,4,3],[1,6,6],[1,4,3]])
 # 1 1 6     1   1   6     1   nil 6      nil nil 6
 # 2 4 6     2   4   6     2   4   6      2   nil nil
 # 1 4 3     1   4   3     1   4   3      nil nil 3      => 15 but 10 is better
+
+class LLNode
+  def initialize(value,n_node=nil,p_node=nil)
+    @val = value
+    @n_node = n_node
+    @p_node = p_node
+  end
+  def value
+    @val
+  end
+  def next_node
+    @n_node
+  end
+  def prev_node
+    @p_node
+  end
+  def after_size
+    1+if @n_node
+      @n_node.after_size
+    else
+      0
+    end
+  end
+  def before_size
+    1+if @p_node
+      @p_node.before_size
+    else
+      0
+    end
+  end
+end
+
+puts "\n"
+def problem20(a_list,b_list)
+  a_size = a_list.after_size
+  b_size = b_list.after_size
+  while a_size > b_size do
+    a_list = a_list.next_node
+    a_size -= 1
+  end
+  while a_size < b_size do
+    b_list = b_list.next_node
+    b_size -= 1
+  end
+  while a_list.value != b_list.value do
+    a_list = a_list.next_node
+    b_list = b_list.next_node
+    if a_list.nil? || b_list.nil?
+      return nil
+    end
+  end
+  return a_list
+end
+
+puts problem20(LLNode.new(21, LLNode.new(3, LLNode.new(7, LLNode.new(8, LLNode.new(10))))), LLNode.new(99, LLNode.new(1, LLNode.new(8, LLNode.new(10))))).inspect
