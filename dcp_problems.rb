@@ -294,3 +294,37 @@ end
 def problem18(ar,k)
   ar.each_cons(k).map(&:max)
 end
+
+def problem19(cost)
+  total = 0.0
+  # pick row with highest average and choose smallest cost
+  # repeat until no rows left
+  while cost.flatten.compact != [] do
+    avgs = cost.map{|c| c.compact == [] ? 0 : c.compact.reduce(0,:+)/c.compact.size.to_f} # get each row's average (excluding column not allowed)
+    max = avgs.max
+    to_choose = avgs.index(max) # what if max is in avg 2 spots? # 2 rows with same average cost
+    choosing = cost[to_choose]
+    chosen = choosing.compact.min
+    column = choosing.index(chosen) # what if chosen is in choosing in 2 spots? # 2 columns with same cost
+    total += chosen
+    cost[to_choose] = [nil] * cost[to_choose].size
+    cost[to_choose-1][column] = nil if to_choose > 0
+    cost[to_choose+1][column] = nil if to_choose < cost.size - 1
+  end
+  return total
+end
+
+puts problem19([[5,6,2],[1,1,6],[2,4,6],[1,4,3]])
+puts problem19([[5,6,2],[2,4,3],[1,6,6],[1,4,3]])
+
+# 5 6 2     nil nil 2       nil nil 2    nil nil 2
+# 5 6 2     5   6   nil     5   nil nil  5   nil nil
+# 1 1 6     1   1   6       nil 1   6    nil 1   nil
+# 2 4 6     2   4   6       2   4   6    2   nil nil
+# 1 4 3     1   4   3       1   4   3    nil nil   3    => 13
+
+# 5 6 2     nil nil 2     nil nil 2      nil nil 2
+# 5 2 6     5   2   nil   nil 2   nil    nil 2   nil
+# 1 1 6     1   1   6     1   nil 6      nil nil 6
+# 2 4 6     2   4   6     2   4   6      2   nil nil
+# 1 4 3     1   4   3     1   4   3      nil nil 3      => 15 but 10 is better
