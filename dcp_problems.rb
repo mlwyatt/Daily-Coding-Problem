@@ -360,7 +360,6 @@ class LLNode
   end
 end
 
-puts "\n"
 def problem20(a_list,b_list)
   a_size = a_list.after_size
   b_size = b_list.after_size
@@ -382,4 +381,15 @@ def problem20(a_list,b_list)
   return a_list
 end
 
-puts problem20(LLNode.new(21, LLNode.new(3, LLNode.new(7, LLNode.new(8, LLNode.new(10))))), LLNode.new(99, LLNode.new(1, LLNode.new(8, LLNode.new(10))))).inspect
+def problem21(slots)
+  rooms = []
+  slots.each do |(stime,etime)|
+    room = rooms.find{|room| room.all?{|(st1,et1)| !((st1 <= stime && et1 >= stime) || (st1 <= etime && et1 >= etime) || (st1 >= stime && et1 <= etime))}} # find no overlap
+    if room.nil?
+      rooms << [[stime,etime]]
+    else
+      room << [stime,etime]
+    end
+  end
+  rooms.size
+end
