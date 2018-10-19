@@ -405,3 +405,35 @@ def problem22(words,sent)
   end
   return orig.join('') == sent ? orig : nil
 end
+
+def problem23(maze,start,finish)
+  sr, sc = start
+  fr, fc = finish
+  empties = maze.flatten.count(false)
+  weights = Array.new(maze.size){Array.new(maze[0].size)}
+  weights[fr][fc] = 0
+  counter = 0
+  while weights.flatten.compact.size < empties && counter < maze.size+maze[0].size do
+    # this loop will run O(n+m-1) if the maze is do-able
+    # so a add a break counter if there is a row or column of walls
+    weights.each_index do |wr|
+      weights[wr].each_index do |wc|
+        next if weights[wr][wc].nil?
+        if wr > 0 && !maze[wr-1][wc]
+          weights[wr-1][wc] = [weights[wr-1][wc],weights[wr][wc]+1].compact.min
+        end
+        if wc > 0 && !maze[wr][wc-1]
+          weights[wr][wc-1] = [weights[wr][wc-1],weights[wr][wc]+1].compact.min
+        end
+        if wr < weights.size - 1 && !maze[wr+1][wc]
+          weights[wr+1][wc] = [weights[wr+1][wc],weights[wr][wc]+1].compact.min
+        end
+        if wc < weights[wr].size - 1 && !maze[wr][wc+1]
+          weights[wr][wc+1] = [weights[wr][wc+1],weights[wr][wc]+1].compact.min
+        end
+      end
+    end
+    counter += 1
+  end
+  return weights[sr][sc]
+end
