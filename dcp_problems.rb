@@ -12,11 +12,48 @@ end
 
 # problem 3
 class Node
-  attr_accessor :val, :left, :right
+  attr_accessor :val, :left, :right, :locked_children
   def initialize(val,left=nil,right=nil)
     @val = val
     @left = left
     @right = right
+    @locked = false
+    @locked_children = 0
+  end
+  def add_parent(parent)
+    @parent = parent
+  end
+  def locked?
+    @locked
+  end
+  def can_lock?
+    return false if locked_children > 0
+    p = @parent
+    while p do
+      return false if p.locked?
+      p = p.parent
+    end
+    return true
+  end
+  def lock
+    return false if can_lock?
+    p = @parent
+    while p do
+      p.locked_children += 1
+      p = p.parent
+    end
+    @locked = true
+    return true
+  end
+  def unlock
+    return false if can_lock?
+    p = @parent
+    while p do
+      p.locked_children -= 1
+      p = p.parent
+    end
+    @locked = false
+    return true
   end
   def is_unival?
     return true if is_leaf?
