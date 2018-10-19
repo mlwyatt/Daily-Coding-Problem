@@ -393,3 +393,15 @@ def problem21(slots)
   end
   rooms.size
 end
+
+def problem22(words,sent)
+  start = 0
+  orig = []
+  (0...sent.size).each do |i|
+    if words.include?(sent[start..i])
+      orig << sent[start..i]
+      start = i+1
+    end
+  end
+  return orig.join('') == sent ? orig : nil
+end
