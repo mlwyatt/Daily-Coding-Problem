@@ -375,8 +375,14 @@ class LLNode
   def value
     @val
   end
+  def next_node=(n_node)
+    @n_node = n_node
+  end
   def next_node
     @n_node
+  end
+  def prev_node=(p_node)
+    @p_node = p_node
   end
   def prev_node
     @p_node
@@ -473,4 +479,58 @@ def problem23(maze,start,finish)
     counter += 1
   end
   return weights[sr][sc]
+end
+
+def problem25(reg,str)
+  # return (str =~ /^#{reg}$/) == 0
+  # reg.split(/\.\*?/)
+  pointer = 0
+  reg.chars.each_with_index do |r,i|
+    if r == '*'
+      next
+    elsif r == '.'
+      if reg[i+1] == '*'
+        # look ahead somehow
+      else
+        if str[pointer]
+          pointer += 1
+        else
+          return false;
+        end
+      end
+    else
+      if str[pointer] == r
+        pointer += 1
+      else
+        return false
+      end
+    end
+  end
+  return true
+end
+
+puts problem25('ra.','ray')
+puts problem25('ra.','raymond')
+puts problem25('.*at','chat')
+puts problem25('.*at','chats')
+
+
+def problem26(head,k)
+  fast = head
+  slow = head
+  counter = 0
+  while fast do
+    fast = fast.next_node
+    if counter < k
+      counter += 1
+    else
+      if fast
+        slow = slow.next_node
+      else
+        slow.next_node = slow.next_node.next_node
+        break
+      end
+    end
+  end
+  return head
 end
