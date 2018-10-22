@@ -483,30 +483,21 @@ end
 
 def problem25(reg,str)
   # return (str =~ /^#{reg}$/) == 0
-  # reg.split(/\.\*?/)
-  pointer = 0
-  reg.chars.each_with_index do |r,i|
+  i = 0
+  while reg != str do
+    r = reg[i]
     if r == '*'
-      next
     elsif r == '.'
       if reg[i+1] == '*'
-        # look ahead somehow
-      else
-        if str[pointer]
-          pointer += 1
-        else
-          return false;
-        end
+        reg[i+1] == '.*'
       end
-    else
-      if str[pointer] == r
-        pointer += 1
-      else
-        return false
-      end
+      reg[i] = str[i]
+    elsif r != str[i]
+      break
     end
+    i += 1
   end
-  return true
+  return str == reg
 end
 
 puts problem25('ra.','ray')
@@ -533,4 +524,18 @@ def problem26(head,k)
     end
   end
   return head
+end
+
+def problem27(str)
+  stack = []
+  str.chars.each do |s|
+    if (stack[-1] == '(' && s == ')') ||
+       (stack[-1] == '[' && s == ']') ||
+       (stack[-1] == '{' && s == '}')
+      stack.pop
+    else
+      stack << s
+    end
+  end
+  return stack.empty?
 end
