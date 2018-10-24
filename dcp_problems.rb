@@ -500,10 +500,10 @@ def problem25(reg,str)
   return str == reg
 end
 
-puts problem25('ra.','ray')
-puts problem25('ra.','raymond')
-puts problem25('.*at','chat')
-puts problem25('.*at','chats')
+# puts problem25('ra.','ray')
+# puts problem25('ra.','raymond')
+# puts problem25('.*at','chat')
+# puts problem25('.*at','chats')
 
 
 def problem26(head,k)
@@ -538,4 +538,16 @@ def problem27(str)
     end
   end
   return stack.empty?
+end
+
+def problem29(str)
+  ret = ["0#{str[0]}"]
+  str.chars.each_with_index do |s,i|
+    if s == ret[-1][-1]
+      ret[ret.size-1] = "#{ret[ret.size-1].chop.to_i+1}#{s}"
+    else
+      ret << "1#{s}"
+    end
+  end
+  ret.join
 end
