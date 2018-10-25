@@ -484,6 +484,7 @@ end
 def problem25(reg,str)
   # return (str =~ /^#{reg}$/) == 0
   i = 0
+  ret = ''
   while reg != str do
     r = reg[i]
     if r == '*'
@@ -491,13 +492,15 @@ def problem25(reg,str)
       if reg[i+1] == '*'
         reg[i+1] == '.*'
       end
-      reg[i] = str[i]
-    elsif r != str[i]
+      ret[i] = str[i]
+    elsif r == str[i]
+      ret[i] = str[i]
+    else
       break
     end
     i += 1
   end
-  return str == reg
+  return str == ret
 end
 
 # puts problem25('ra.','ray')
@@ -540,6 +543,16 @@ def problem27(str)
   return stack.empty?
 end
 
+def problem28(list,k)
+  just = []
+  list.each_with_index do |s,i|
+    if s.size + list[i+1].size + 1 > k
+      just << s + (' '*(k - s.size))
+    end
+  end
+  return just
+end
+
 def problem29(str)
   ret = ["0#{str[0]}"]
   str.chars.each_with_index do |s,i|
@@ -551,3 +564,21 @@ def problem29(str)
   end
   ret.join
 end
+
+# puts problem28(['the', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'],16)
+
+# [
+#  'the  quick brown', # 1 extra space on the left
+#  'fox  jumps  over', # 2 extra spaces distributed evenly
+#  'the   lazy   dog'  # 4 extra spaces distributed evenly
+# ]
+#
+def problem30(walls)
+  h = [walls[0],walls[-1]].min
+  walls.reduce(0){|s,n| s+(h-[n,h].min)}
+end
+
+# puts problem30([3,0,1,3,0,5])
+# puts problem30([2,1,2])
+# puts problem30([3,0,7,0,7,0,5])
+#                 # 3   7   5 = 15
