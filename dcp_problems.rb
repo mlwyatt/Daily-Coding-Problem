@@ -574,11 +574,16 @@ end
 # ]
 #
 def problem30(walls)
-  h = [walls[0],walls[-1]].min
-  walls.reduce(0){|s,n| s+(h-[n,h].min)}
-end
+  outer = [walls[0],walls[-1]].min
 
-# puts problem30([3,0,1,3,0,5])
-# puts problem30([2,1,2])
-# puts problem30([3,0,7,0,7,0,5])
-#                 # 3   7   5 = 15
+  walls.each_with_index.reduce(0) do |s,(n,i)|
+    if i == 0 || i == walls.size - 1
+      s
+    elsif walls[i-1] > outer && walls[i+1] > outer
+      h = [walls[i-1],walls[i+1]].min
+      s + (h-[n,h].min)
+    else
+      s + (outer-[n,outer].min)
+    end
+  end
+end
