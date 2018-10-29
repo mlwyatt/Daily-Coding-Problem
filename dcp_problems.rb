@@ -587,3 +587,24 @@ def problem30(walls)
     end
   end
 end
+
+def problem33(list)
+  new_list = []
+  list.each do |l|
+    if new_list == []
+      new_list << l
+    else
+      i = (0...new_list.size).bsearch{|j| l < new_list[j]}
+      if i.nil?
+        new_list << l
+      else
+        if new_list[i+1].nil?
+          new_list[i..i+1]=l,new_list[i]
+        else
+          new_list[i..i+1]=l,new_list[i],new_list[i+1]
+        end
+      end
+    end
+    puts new_list[((new_list.size-1)/2.0).floor..((new_list.size-1)/2.0).ceil].reduce(0,:+)/(new_list.size % 2 == 0 ? 2.0 : 1.0)
+  end
+end
