@@ -545,12 +545,28 @@ end
 
 def problem28(list,k)
   just = []
-  list.each_with_index do |s,i|
-    if s.size + list[i+1].size + 1 > k
-      just << s + (' '*(k - s.size))
+  working = ''
+  list.each_with_index do |s,j|
+    if working.size + s.size + 1 < k
+      if working == ''
+        working = s
+      else
+        working = "#{working} #{s}"
+      end
+    else
+      counter = 0
+      indexes = working.enum_for(:scan,' ').map{Regexp.last_match.offset(0).first}
+      while working.size < k
+        working[indexes[counter]] = '  '
+        indexes = indexes.each_with_index.map{|ind,i| ind+(i > counter ? 1 : 0)}
+        counter = (counter+1)%indexes.size
+      end
+      just << working
+      working = ''
     end
+    puts working
   end
-  return just
+  return just.inspect
 end
 
 def problem29(str)
@@ -565,7 +581,7 @@ def problem29(str)
   ret.join
 end
 
-# puts problem28(['the', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'],16)
+puts problem28(['the', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'],16)
 
 # [
 #  'the  quick brown', # 1 extra space on the left
@@ -608,3 +624,48 @@ def problem33(list)
     puts new_list[((new_list.size-1)/2.0).floor..((new_list.size-1)/2.0).ceil].reduce(0,:+)/(new_list.size % 2 == 0 ? 2.0 : 1.0)
   end
 end
+
+def problem34(str)
+  return str if str.reverse == str
+  # return str with smaller external palindrome if has 2 external palindrome
+  # return str with external non-palindrome if has 1 external palindrome
+  words = []
+  num = str.size-1
+  str.chars.each_with_index do |s,i|
+    if i == 0
+      words << "#{str[0...-1]}#{str.reverse}"
+    elsif i == str.size - 1
+      words << "#{str.reverse[0...-1]}#{str}"
+    end
+  end
+  words.sort[0]
+end
+
+puts problem34('race') # ecarace comes before ercacre, ecrarce, raecear, reacaer, racecar, recacer, raecear
+puts problem34('google') # elgoogle
+puts problem34('googleasdfjkllkjfdsael') # googleasdfjkllkjfdsaelgoog
+puts problem34('googasdffdsaabba') # abbagoogasdffdsagoogabba # has 2 external palindrones but this answer only adds 8 instead of 12
+puts problem34('googlabba') # abbagooglgoogabba comes before abbalgooglabba
+puts problem34('googabcdabba') # abbadcbagoogabcdabba comes before googabcdabbadcbagoog
+puts problem34('googabcdgoog') # googabcdcbagoog # has 2 external palindromes but this answer only adds 3 instead of 8
+
+def problem35(list)
+  point = list.take_while{|i| i == 'R'}.size
+  list.each_with_index.reverse_each do |l,i|
+    break if point > i
+    next unless l == 'R'
+    list[point],list[i] = list[i],list[point]
+    point += 1
+  end
+  point = list.take_while{|i| i == 'R' || i == 'G'}.size
+  list.each_with_index.reverse_each do |l,i|
+    break if point > i
+    next unless l == 'G'
+    list[point],list[i] = list[i],list[point]
+    point += 1
+  end
+  return list
+end
+
+puts problem35(['G', 'B', 'R', 'R', 'B', 'R', 'G']).inspect
+puts problem35(['R', 'B', 'R', 'R', 'B', 'R', 'G']).inspect
