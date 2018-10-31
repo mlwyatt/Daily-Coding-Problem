@@ -667,5 +667,22 @@ def problem35(list)
   return list
 end
 
-puts problem35(['G', 'B', 'R', 'R', 'B', 'R', 'G']).inspect
-puts problem35(['R', 'B', 'R', 'R', 'B', 'R', 'G']).inspect
+class BSTree
+  def initialize(val,left=nil,right=nil)
+    @val = val
+    @left = left
+    @right = right
+  end
+  def second_max
+    return @left.max if !@left.nil? && @right.nil?
+    return @right.second_max if @right && !@right.leaf?
+    return @val
+  end
+  def max
+    return @val if @right.nil?
+    return @right.max
+  end
+  def leaf?
+    @left.nil? && @right.nil?
+  end
+end
