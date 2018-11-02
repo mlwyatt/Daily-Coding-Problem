@@ -349,22 +349,105 @@ def problem19(cost)
     cost[to_choose+1][column] = nil if to_choose < cost.size - 1
   end
   return total
+
+
+
+
+
+
+  best_min = cost[0][0]
+  prev = 0
+  n = cost.size
+  k = cost[0].size
+  n.times do |row,i|
+    next if i == 0
+    row = cost[0]
+    if prev == 0
+      best_min += row[1]
+      prev = 1
+    else
+      best_min += row[0]
+      prev = 0
+    end
+  end
+
+  (k**n).times do |i|
+    prev = nil
+    min = 0
+    k.times do |j|
+      row = cost[j]
+      row.each_with_index do |c,k|
+        next if prev == k
+
+      end
+    end
+  end
+
+
+
+
+
+  def min_for_left(cost,min,cur_cost=0,prev = 0)
+    this_min = 0
+    cost[0].each_with_index do |c,i|
+      next if i == prev
+      next if cur_cost + c > min
+      if cost[1].nil? && cur_cost + c < this_min
+        this_min = cur_cost + c
+      else
+        this_min = min_for_left(cost[1..-1],min,cur_cost+c,i)
+      end
+    end
+    return this_min
+  end
+
+
+
+
 end
 
-puts problem19([[5,6,2],[1,1,6],[2,4,6],[1,4,3]])
-puts problem19([[5,6,2],[2,4,3],[1,6,6],[1,4,3]])
+def problem19_2(cost)
+  best_min = best_prev = nil
+  cost.each_with_index do |row,i|
+    if i == 0
+      best_min = row[0]
+      best_prev = 0
+      next
+    end
+    if best_prev == 0
+      best_min += row[1]
+      best_prev = 1
+    else
+      best_min += row[0]
+      best_prev = 0
+    end
+  end
+  min_for_left = lambda do |cost,min,cur_cost=0,prev=nil|
+    return cur_cost if cost[0].nil?
+    this_min = nil
+    cost[0].each_with_index do |c,i|
+      next if i == prev
+      next if cur_cost + c > min
+      if cost[1].nil? && (this_min.nil? || cur_cost + c < this_min)
+        this_min = cur_cost + c
+      else
+        this_min = [this_min,min_for_left.call(cost[1..-1],min,cur_cost+c,i)].compact.min
+      end
+    end
+    return this_min
+  end
+  min_for_left.call(cost,best_min)
+end
 
-# 5 6 2     nil nil 2       nil nil 2    nil nil 2
-# 5 6 2     5   6   nil     5   nil nil  5   nil nil
-# 1 1 6     1   1   6       nil 1   6    nil 1   nil
-# 2 4 6     2   4   6       2   4   6    2   nil nil
-# 1 4 3     1   4   3       1   4   3    nil nil   3    => 13
+# def min_for_left(cost,min,cur_cost=0,prev=nil)
+#
+# end
 
-# 5 6 2     nil nil 2     nil nil 2      nil nil 2
-# 5 2 6     5   2   nil   nil 2   nil    nil 2   nil
-# 1 1 6     1   1   6     1   nil 6      nil nil 6
-# 2 4 6     2   4   6     2   4   6      2   nil nil
-# 1 4 3     1   4   3     1   4   3      nil nil 3      => 15 but 10 is better
+puts problem19_2([[5,6,2],[100,200,1]]) # 6
+puts problem19_2([[5,6,2],[1,1,6],[2,4,6],[1,4,3]]) # 8
+puts problem19_2([[5,6,2],[5,6,2],[1,6,6],[2,4,6],[1,4,3]]) # 13
+puts problem19_2([[5,6,2],[5,2,6],[1,6,6],[2,4,6],[1,4,3]]) # 10
+exit
 
 class LLNode
   def initialize(value,n_node=nil,p_node=nil)
