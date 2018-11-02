@@ -333,80 +333,6 @@ def problem18(ar,k)
 end
 
 def problem19(cost)
-  total = 0.0
-  # pick row with highest average and choose smallest cost
-  # repeat until no rows left
-  while cost.flatten.compact != [] do
-    avgs = cost.map{|c| c.compact == [] ? 0 : c.compact.reduce(0,:+)/c.compact.size.to_f} # get each row's average (excluding column not allowed)
-    max = avgs.max
-    to_choose = avgs.index(max) # what if max is in avg 2 spots? # 2 rows with same average cost
-    choosing = cost[to_choose]
-    chosen = choosing.compact.min
-    column = choosing.index(chosen) # what if chosen is in choosing in 2 spots? # 2 columns with same cost
-    total += chosen
-    cost[to_choose] = [nil] * cost[to_choose].size
-    cost[to_choose-1][column] = nil if to_choose > 0
-    cost[to_choose+1][column] = nil if to_choose < cost.size - 1
-  end
-  return total
-
-
-
-
-
-
-  best_min = cost[0][0]
-  prev = 0
-  n = cost.size
-  k = cost[0].size
-  n.times do |row,i|
-    next if i == 0
-    row = cost[0]
-    if prev == 0
-      best_min += row[1]
-      prev = 1
-    else
-      best_min += row[0]
-      prev = 0
-    end
-  end
-
-  (k**n).times do |i|
-    prev = nil
-    min = 0
-    k.times do |j|
-      row = cost[j]
-      row.each_with_index do |c,k|
-        next if prev == k
-
-      end
-    end
-  end
-
-
-
-
-
-  def min_for_left(cost,min,cur_cost=0,prev = 0)
-    this_min = 0
-    cost[0].each_with_index do |c,i|
-      next if i == prev
-      next if cur_cost + c > min
-      if cost[1].nil? && cur_cost + c < this_min
-        this_min = cur_cost + c
-      else
-        this_min = min_for_left(cost[1..-1],min,cur_cost+c,i)
-      end
-    end
-    return this_min
-  end
-
-
-
-
-end
-
-def problem19_2(cost)
   best_min = best_prev = nil
   cost.each_with_index do |row,i|
     if i == 0
@@ -438,16 +364,6 @@ def problem19_2(cost)
   end
   min_for_left.call(cost,best_min)
 end
-
-# def min_for_left(cost,min,cur_cost=0,prev=nil)
-#
-# end
-
-puts problem19_2([[5,6,2],[100,200,1]]) # 6
-puts problem19_2([[5,6,2],[1,1,6],[2,4,6],[1,4,3]]) # 8
-puts problem19_2([[5,6,2],[5,6,2],[1,6,6],[2,4,6],[1,4,3]]) # 13
-puts problem19_2([[5,6,2],[5,2,6],[1,6,6],[2,4,6],[1,4,3]]) # 10
-exit
 
 class LLNode
   def initialize(value,n_node=nil,p_node=nil)
@@ -768,4 +684,8 @@ class BSTree
   def leaf?
     @left.nil? && @right.nil?
   end
+end
+
+def problem37(list)
+  (0..list.size).map{|i| list.combination(3).to_a}.flatten(1)
 end
