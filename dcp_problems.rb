@@ -687,5 +687,5 @@ class BSTree
 end
 
 def problem37(list)
-  (0..list.size).map{|i| list.combination(3).to_a}.flatten(1)
+  (0..list.size).map{|i| list.combination(i).to_a}.flatten(1)
 end
