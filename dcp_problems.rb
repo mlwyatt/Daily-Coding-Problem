@@ -552,6 +552,16 @@ def problem28(list,k)
       else
         working = "#{working} #{s}"
       end
+      if j == list.size - 1
+        counter = 0
+        indexes = working.enum_for(:scan,' ').map{Regexp.last_match.offset(0).first}
+        while working.size < k
+          working[indexes[counter]] = '  '
+          indexes = indexes.each_with_index.map{|ind,i| ind+(i > counter ? 1 : 0)}
+          counter = (counter+1)%indexes.size
+        end
+        just << working
+      end
     else
       counter = 0
       indexes = working.enum_for(:scan,' ').map{Regexp.last_match.offset(0).first}
@@ -561,7 +571,7 @@ def problem28(list,k)
         counter = (counter+1)%indexes.size
       end
       just << working
-      working = ''
+      working = s
     end
     puts working
   end
@@ -580,14 +590,6 @@ def problem29(str)
   ret.join
 end
 
-puts problem28(['the', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'],16)
-
-# [
-#  'the  quick brown', # 1 extra space on the left
-#  'fox  jumps  over', # 2 extra spaces distributed evenly
-#  'the   lazy   dog'  # 4 extra spaces distributed evenly
-# ]
-#
 def problem30(walls)
   outer = [walls[0],walls[-1]].min
 
