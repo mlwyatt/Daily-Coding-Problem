@@ -709,3 +709,13 @@ class Stack
     @sorted[-1]
   end
 end
+
+def problem44(list)
+  counter = 0
+  list.each_with_index do |l,i|
+    list[i+1..-1].each do |l2|
+      counter += 1 if l > l2
+    end
+  end
+  counter
+end
