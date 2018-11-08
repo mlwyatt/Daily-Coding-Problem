@@ -691,3 +691,21 @@ end
 def problem37(list)
   (0..list.size).map{|i| list.combination(i).to_a}.flatten(1)
 end
+
+class Stack
+  def initialize
+    @vals = []
+    @sorted = []
+  end
+  def push(val)
+    @vals << val
+    @sorted << (@sorted[-1] && @sorted[-1] > val ? @sorted[-1] : val)
+  end
+  def pop
+    @sorted.pop
+    @vals.pop
+  end
+  def max
+    @sorted[-1]
+  end
+end
