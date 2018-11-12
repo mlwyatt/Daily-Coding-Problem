@@ -720,6 +720,27 @@ def problem44(list)
   counter
 end
 
+def problem45
+  rand5 = Proc.new{(5*rand+1).to_i}
+  first = nil
+  second = nil
+  reset = Proc.new do
+    first = rand5.call
+    second = rand5.call
+  end
+  reset.call
+  while first == 5 and second != 1 do
+    reset.call
+  end
+  return (5*first+second)%7+1
+  #   1 2 3 4 5
+  # 1 7 1 2 3 4
+  # 2 5 6 7 1 2
+  # 3 3 4 5 6 7
+  # 4 1 2 3 4 5
+  # 5 6 0 0 0 0
+end
+
 def problem46(str)
   size = str.size
   size.downto(1).each do |i|
