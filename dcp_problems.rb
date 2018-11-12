@@ -710,6 +710,21 @@ class Stack
   end
 end
 
+def problem42(list,k)
+  list = list.select{|i| i <= k}.sort
+  while list.size > 0
+    return [list[0]] if list[0] == k
+    return nil if list.size == 1
+    res = problem42(list[0...-1],k-list[-1])
+    if res.nil?
+      list = list[0...-1]
+    else
+      return [res,list[-1]].flatten
+    end
+  end
+  return nil
+end
+
 def problem44(list)
   counter = 0
   list.each_with_index do |l,i|
@@ -729,7 +744,7 @@ def problem45
     second = rand5.call
   end
   reset.call
-  while first == 5 and second != 1 do
+  while first == 5 and second != 1
     reset.call
   end
   return (5*first+second)%7+1
