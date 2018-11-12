@@ -719,3 +719,13 @@ def problem44(list)
   end
   counter
 end
+
+def problem46(str)
+  size = str.size
+  size.downto(1).each do |i|
+    str.chars.each_cons(i) do |substr|
+      substr = substr.join
+      return substr if substr.reverse == substr
+    end
+  end
+end
