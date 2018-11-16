@@ -765,3 +765,67 @@ def problem46(str)
     end
   end
 end
+
+def problem49(list)
+  sum = 0
+  list.each_with_index do |l,i|
+    next if sum == 0 && l < 0
+    if (list[i+1].to_f + (i == 0 ? 0 : list[i-1])).abs <= l
+      puts l
+      sum += l
+    elsif list[i+1].to_f.abs <= l
+      puts l
+      sum += l
+    elsif l < 0 && sum > 0 && l.abs < list[i+1].to_f
+      puts l
+      sum += l
+    end
+  end
+  sum
+end
+
+puts problem49([-1,-2,-3,-4]) # 0 (finished)
+puts problem49([34, -50, 42, 14, -5, 86]) # 137 (last 4)
+puts problem49([50, -50, 42, 14, -5, 86]) # 137 (all or last 4)
+puts problem49([51, -50, 42, 14, -5, 86]) # 138 (all)
+
+
+
+def problem51(n=52)
+  cards = (1..n).to_a
+  randk = Proc.new{|k| (k*rand).to_i}
+  n.times do |i|
+    pos1 = randk.call(n)
+    pos2 = randk.call(n)
+    cards[pos1],cards[pos2] = cards[pos2],cards[pos1]
+  end
+  cards
+end
+
+ways = [1,2,3].permutation.to_a
+counts = [0,0,0,0,0,0]
+24000.times do |i|
+  index = ways.index(problem51(3))
+  counts[index] += 1
+end
+puts ways.inspect
+puts counts.inspect
+
+class LRUCache
+  def initialize(n)
+    @keys = [nil] * n
+    @values = [nil] * n
+  end
+  def set(key,value)
+    index = @keys.index(key)
+    @keys.delete_at(index || 0)
+    @values.delete_at(index || 0)
+    @keys << key
+    @values << value
+  end
+  def get(key)
+    index = @keys.index(key)
+    return nil if index.nil?
+    @values[index]
+  end
+end
