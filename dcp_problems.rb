@@ -829,3 +829,15 @@ class LRUCache
     @values[index]
   end
 end
+
+class Queue
+  def initialize
+    @vals = []
+  end
+  def enqueue(val)
+    @vals << val
+  end
+  def dequeue
+    @vals.delete_at(0)
+  end
+end
