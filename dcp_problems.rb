@@ -573,9 +573,8 @@ def problem28(list,k)
       just << working
       working = s
     end
-    puts working
   end
-  return just.inspect
+  return just
 end
 
 def problem29(str)
@@ -804,12 +803,13 @@ end
 
 ways = [1,2,3].permutation.to_a
 counts = [0,0,0,0,0,0]
-24000.times do |i|
+loop_times = 24000
+loop_times.times do |i|
   index = ways.index(problem51(3))
   counts[index] += 1
 end
 puts ways.inspect
-puts counts.inspect
+puts counts.map{|c| c/loop_times.to_f}.inspect
 
 class LRUCache
   def initialize(n)
@@ -841,3 +841,31 @@ class Queue
     @vals.delete_at(0)
   end
 end
+
+def problem57(str,k)
+  just = []
+  working = ''
+  list = str.split(' ')
+  list.each_with_index do |s,j|
+    return nil if s.size > k
+    if working.size + s.size + 1 <= k
+      if working == ''
+        working = s
+      else
+        working = "#{working} #{s}"
+      end
+      if j == list.size - 1
+        just << working
+      end
+    else
+      just << working
+      working = s
+      if j == list.size - 1
+        just << working
+      end
+    end
+  end
+  return just
+end
+
+puts problem57('the quick brown fox jumps over the lazy dog',10).inspect
